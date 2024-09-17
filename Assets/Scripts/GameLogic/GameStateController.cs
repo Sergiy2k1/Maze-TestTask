@@ -1,4 +1,5 @@
 ﻿using UI;
+using UI.Elements;
 using UI.Popups;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,13 +12,13 @@ namespace GameLogic
         Paused,
         Won,
         Lost,
-        Quit // Додаємо стан Quit
+        Quit 
     }
 
     public class GameStateController : MonoBehaviour
     { 
- 
-
+        [SerializeField] private TimeCounter timeCounter;
+        
         [SerializeField] private PausePopup pauseMenuUI;
         [SerializeField] private WinPopup winMenuUI;
         [SerializeField] private LosePopup loseMenuUI;
@@ -49,6 +50,7 @@ namespace GameLogic
             switch (state)
             {
                 case GameState.Playing:
+                    timeCounter.PlayTimer();
                     pauseMenuUI.HideView();
                     winMenuUI.HideView();
                     loseMenuUI.HideView();
@@ -57,6 +59,7 @@ namespace GameLogic
                     break;
 
                 case GameState.Paused:
+                    timeCounter.StopCounting(); 
                     if (pauseMenuUI != null) pauseMenuUI.ShowView();
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -64,15 +67,16 @@ namespace GameLogic
 
                 case GameState.Won:
                     winMenuUI.ShowView();
-                    Debug.Log("Win");
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
+                    timeCounter.StopCounting(); 
                     break;
 
                 case GameState.Lost:
                     if (loseMenuUI != null) loseMenuUI.ShowView();
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
+                    timeCounter.StopCounting(); 
                     break;
 
                 case GameState.Quit: 
@@ -142,6 +146,7 @@ namespace GameLogic
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             _currentState = GameState.Playing;
+            timeCounter.ResetTime();
         }
 
         private void QuitGame()

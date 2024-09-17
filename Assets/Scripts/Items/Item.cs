@@ -7,8 +7,7 @@ namespace Items
     public abstract class Item : MonoBehaviour
     {
         public string itemName;
-        
-        public Action Changed;
+
         protected abstract void OnCollect(HeroCollector collector);
 
         private void OnTriggerEnter(Collider other)
@@ -17,7 +16,6 @@ namespace Items
             if (collector != null)
             {
                 OnCollect(collector);
-                Changed.Invoke();
             }
         }
     }

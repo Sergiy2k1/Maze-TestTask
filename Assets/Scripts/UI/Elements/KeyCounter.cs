@@ -1,4 +1,4 @@
-﻿using Hero;
+﻿using Environment;
 using TMPro;
 using UnityEngine;
 
@@ -8,12 +8,8 @@ namespace UI.Elements
     {
         [SerializeField] private TextMeshProUGUI counter;
         
-        private HeroCollector _heroCollector;
 
-        public void Construct(HeroCollector heroCollector)
-        {
-            _heroCollector = heroCollector;
-        }
+  
         private void UpdateCounter()
         {
             
