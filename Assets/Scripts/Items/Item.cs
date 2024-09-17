@@ -1,14 +1,11 @@
-﻿using System;
-using Hero;
+﻿using Hero;
 using UnityEngine;
 
 namespace Items
 {
-    public abstract class Item : MonoBehaviour
+    public abstract class Item : MonoBehaviour, ICollectible
     {
-        public string itemName;
-
-        protected abstract void OnCollect(HeroCollector collector);
+        public abstract void OnCollect(HeroCollector collector);
 
         private void OnTriggerEnter(Collider other)
         {

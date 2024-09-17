@@ -31,7 +31,7 @@ namespace Hero
 
         private void Move()
         {
-            if (gameStateController.CurrentState != GameState.Playing)
+            if (!gameStateController.IsGameActive())
                 return;
             
             float horizontalInput = Input.GetAxis(HorizontalAxis);

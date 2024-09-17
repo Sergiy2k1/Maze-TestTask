@@ -7,35 +7,26 @@ namespace Environment
 {
     public class ExitDoor : MonoBehaviour
     {
-        [SerializeField] private KeyItem[] keysForOpen;
+        [SerializeField] private int requiredKeys = 3;
+        [SerializeField] private GameStateController gameStateController;
 
-        [SerializeField] private GameStateController gameStateController; 
-        
-        private int _requiredKeys;
         private bool _isUnlocked;
-
-        private void Start() => 
-            Initial();
-
-        private void Initial() => 
-            _requiredKeys = keysForOpen.Length;
 
         private void OnTriggerEnter(Collider other)
         {
             HeroCollector collector = other.GetComponent<HeroCollector>();
-
             if (collector != null)
             {
                 int keysCollected = collector.Inventory.GetItemCount<KeyItem>();
 
-                if (keysCollected >= _requiredKeys)
+                if (keysCollected >= requiredKeys)
                 {
                     Unlock();
                     gameStateController.OnGameWin();
                 }
                 else
                 {
-                    Debug.Log($"Not enough keys. Collected {keysCollected}/{_requiredKeys}");
+                    Debug.Log($"{keysCollected}/{requiredKeys}");
                 }
             }
         }
@@ -50,7 +41,6 @@ namespace Environment
                 {
                     renderer.material.color = Color.green;
                 }
-                Debug.Log("ExitDoor: Unlocked!");
             }
         }
     }

@@ -1,167 +1,83 @@
-﻿using UI;
+﻿// GameStateController.cs
+
 using UI.Elements;
 using UI.Popups;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GameLogic
 {
-    public enum GameState
-    {
-        Playing,
-        Paused,
-        Won,
-        Lost,
-        Quit 
-    }
-
     public class GameStateController : MonoBehaviour
-    { 
+    {
+        // Посилання на UI-елементи
         [SerializeField] private TimeCounter timeCounter;
-        
         [SerializeField] private PausePopup pauseMenuUI;
         [SerializeField] private WinPopup winMenuUI;
         [SerializeField] private LosePopup loseMenuUI;
 
-        private GameState _currentState;
+        private IGameState _currentState;
+
+        public TimeCounter TimeCounter => timeCounter;
+        public PausePopup PauseMenuUI => pauseMenuUI;
+        public WinPopup WinMenuUI => winMenuUI;
+        public LosePopup LoseMenuUI => loseMenuUI;
         
-        public GameState CurrentState => _currentState;
-        
+        public bool IsGameActive()
+        {
+            return _currentState?.IsGameActive ?? false;
+        }
 
         private void Start()
         {
-            EnterState(GameState.Playing);
+            ChangeState(new PlayingState(this));
         }
 
         private void Update()
         {
-            HandlePauseInput();
+            _currentState?.UpdateState();
         }
 
-        public void ChangeState(GameState newState)
+        public void ChangeState(IGameState newState)
         {
-            ExitState(_currentState);
+            _currentState?.ExitState();
             _currentState = newState;
-            EnterState(_currentState);
-        }
-
-        private void EnterState(GameState state)
-        {
-            switch (state)
-            {
-                case GameState.Playing:
-                    timeCounter.PlayTimer();
-                    pauseMenuUI.HideView();
-                    winMenuUI.HideView();
-                    loseMenuUI.HideView();
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
-                    break;
-
-                case GameState.Paused:
-                    timeCounter.StopCounting(); 
-                    if (pauseMenuUI != null) pauseMenuUI.ShowView();
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    break;
-
-                case GameState.Won:
-                    winMenuUI.ShowView();
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    timeCounter.StopCounting(); 
-                    break;
-
-                case GameState.Lost:
-                    if (loseMenuUI != null) loseMenuUI.ShowView();
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    timeCounter.StopCounting(); 
-                    break;
-
-                case GameState.Quit: 
-                    QuitGame();
-                    break;
-            }
-        }
-
-        private void ExitState(GameState state)
-        {
-            switch (state)
-            {
-                case GameState.Playing:
-                    break;
-
-                case GameState.Paused:
-                    if (pauseMenuUI != null) pauseMenuUI.HideView();
-                    break;
-
-                case GameState.Won:
-                    if (winMenuUI != null) winMenuUI.HideView();
-                    break;
-
-                case GameState.Lost:
-                    if (loseMenuUI != null) loseMenuUI.HideView();
-                    break;
-            }
-        }
-
-        private void HandlePauseInput()
-        {
-            if (_currentState == GameState.Playing && Input.GetKeyDown(KeyCode.Escape))
-            {
-                ChangeState(GameState.Paused);
-            }
-            else if (_currentState == GameState.Paused && Input.GetKeyDown(KeyCode.Escape))
-            {
-                ChangeState(GameState.Playing);
-            }
+            _currentState?.EnterState();
         }
 
         public void OnGameWin()
         {
-            if (_currentState != GameState.Won)
+            if (!(_currentState is WonState))
             {
-                ChangeState(GameState.Won);
+                ChangeState(new WonState(this));
             }
         }
 
         public void OnGameLose()
         {
-            if (_currentState != GameState.Lost)
+            if (!(_currentState is LostState))
             {
-                ChangeState(GameState.Lost);
+                ChangeState(new LostState(this));
             }
         }
 
         public void ResumeGame()
         {
-            if (_currentState == GameState.Paused)
+            if (_currentState is PausedState)
             {
-                ChangeState(GameState.Playing);
+                ChangeState(new PlayingState(this));
             }
         }
 
         public void RestartGame()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            _currentState = GameState.Playing;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(
+                UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            ChangeState(new PlayingState(this));
             timeCounter.ResetTime();
         }
 
-        private void QuitGame()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-        }
-
-        // Метод для зміни стану на Quit
         public void ExitToQuit()
         {
-            ChangeState(GameState.Quit);
+            ChangeState(new QuitState());
         }
     }
 }

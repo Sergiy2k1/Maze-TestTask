@@ -4,15 +4,9 @@ namespace Items
 {
     public class KeyItem : Item
     {
-        protected override void OnCollect(HeroCollector collector)
+        public override void OnCollect(HeroCollector collector)
         {
-            if (collector != null)
-            {
-                collector.CollectItem(this);
-            }
-
-            // Звуковий ефект або анімація
-            // AudioManager.Instance.Play("KeyCollectSound");
+            collector?.CollectItem(this);
 
             Destroy(gameObject);
         }

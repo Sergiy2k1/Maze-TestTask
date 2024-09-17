@@ -1,46 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Items;
 
 namespace Hero
 {
-    public class Inventory
+    public class Inventory : IInventory
     {
-        private List<Item> _items = new List<Item>();
+        private readonly List<ICollectible> _items = new List<ICollectible>();
+        public event Action OnInventoryChanged;
 
-        public void AddItem(Item item)
+        public void AddItem(ICollectible item)
         {
             _items.Add(item);
+            OnInventoryChanged?.Invoke();
         }
 
-        public bool HasItem(Item item)
-        {
-            return _items.Contains(item);
-        }
-
-        public int GetItemCount<T>() where T : Items.Item
+        public int GetItemCount<T>() where T : ICollectible
         {
             int count = 0;
-            foreach (var i in _items)
+            foreach (var item in _items)
             {
-                if (i is T)
+                if (item is T)
                 {
                     count++;
                 }
             }
             return count;
-        }
-
-        public List<T> GetItemsOfType<T>() where T : Items.Item
-        {
-            List<T> result = new List<T>();
-            foreach (var i in _items)
-            {
-                if (i is T t)
-                {
-                    result.Add(t);
-                }
-            }
-            return result;
         }
     }
 }

@@ -5,32 +5,16 @@ namespace Hero
 {
     public class HeroCollector : MonoBehaviour
     {
-        public Inventory Inventory { get; private set; }
-        
-        private void Awake() => 
-            Initial();
+        public IInventory Inventory { get; private set; }
 
-        private void Start() => 
-            UpdateKeyUI();
-
-        public void CollectItem(Item item)
+        private void Awake()
         {
-            Inventory.AddItem(item);
-
-            if (item is KeyItem)
-            {
-                UpdateKeyUI();
-            }
+            Inventory = new Inventory();
         }
 
-        private void Initial() => 
-            Inventory = new Inventory();
-
-        private void UpdateKeyUI()
+        public void CollectItem(ICollectible item)
         {
-            int keysCollected = Inventory.GetItemCount<KeyItem>();
-            int totalKeys = FindObjectsOfType<KeyItem>().Length;
-            
+            Inventory.AddItem(item);
         }
     }
 }

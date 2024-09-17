@@ -20,7 +20,7 @@ namespace CameraLogic
 
         private void HandleCameraRotation()
         {
-            if (gameStateController.CurrentState != GameState.Playing)
+            if (!gameStateController.IsGameActive())
                 return;
             
             float mouseX = Input.GetAxis(AxisMouseX);
