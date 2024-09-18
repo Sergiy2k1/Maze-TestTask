@@ -3,6 +3,7 @@ using Hero;
 using Items;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI.Elements
 {
@@ -10,7 +11,9 @@ namespace UI.Elements
     {
         [SerializeField] private TextMeshProUGUI counterText;
         [SerializeField] private HeroCollector heroCollector;
-        [SerializeField] private int totalKeys = 3;
+        [SerializeField] private ExitEnvironment exitEnvironment;
+         
+        private int _requiredKeys ;
 
         private void Start()
         {
@@ -33,8 +36,9 @@ namespace UI.Elements
 
         private void UpdateCounter()
         {
+            _requiredKeys = exitEnvironment.RequiredKeys;
             int keysCollected = heroCollector.Inventory.GetItemCount<KeyItem>();
-            counterText.text = $"{keysCollected}/{totalKeys}";
+            counterText.text = $"{keysCollected}/{_requiredKeys}";
         }
     }
 }

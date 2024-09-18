@@ -1203,6 +1203,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 474a3dee2fbcb4e498dbf4c15a7da726, type: 3}
+--- !u!114 &218267539330948363 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8460654958254728430, guid: 474a3dee2fbcb4e498dbf4c15a7da726,
+    type: 3}
+  m_PrefabInstance: {fileID: 218267539330948362}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0bb9ae48b734926a0bd6b5b9ba19051, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4106734480215485996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1589,6 +1601,11 @@ PrefabInstance:
       propertyPath: heroCollector
       value: 
       objectReference: {fileID: 711031867}
+    - target: {fileID: 2003510087806584244, guid: 837722d88fa3b1145848c6a8baf369cb,
+        type: 3}
+      propertyPath: exitEnvironment
+      value: 
+      objectReference: {fileID: 218267539330948363}
     - target: {fileID: 2045767617555861263, guid: 837722d88fa3b1145848c6a8baf369cb,
         type: 3}
       propertyPath: m_fontAsset

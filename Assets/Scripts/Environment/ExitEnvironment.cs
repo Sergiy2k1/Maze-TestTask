@@ -5,11 +5,13 @@ using UnityEngine;
 
 namespace Environment
 {
-    public class Exit : MonoBehaviour
+    public class ExitEnvironment : MonoBehaviour
     {
         [SerializeField] private int requiredKeys = 3;
         [SerializeField] private GameStateController gameStateController;
 
+        public int RequiredKeys => requiredKeys;
+        
         private bool _isUnlocked;
 
         private void OnTriggerEnter(Collider other)
