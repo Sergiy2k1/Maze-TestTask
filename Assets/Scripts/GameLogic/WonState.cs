@@ -36,7 +36,7 @@ namespace GameLogic
 
         public void UpdateState()
         {
-            // Логіка оновлення для стану "Перемога", якщо необхідно
+            
         }
     }
 }

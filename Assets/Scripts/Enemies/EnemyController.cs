@@ -25,7 +25,7 @@ namespace Enemies
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
-            _player = GameObject.FindGameObjectWithTag("Player").transform;
+            _player = GameObject.FindGameObjectWithTag("Player").transform; 
             _playerDetection = GetComponent<PlayerDetection>();
 
             if (patrolPoints.Length == 0)
