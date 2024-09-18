@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using GameLogic;
 
 namespace Enemies
 {
@@ -7,7 +8,8 @@ namespace Enemies
     {
         [SerializeField] private float detectionRange = 10.0f;
         [SerializeField] private float fieldOfViewAngle = 120.0f; 
-
+        
+        [SerializeField] private GameStateController gameStateController;
         private Transform _player;
         public event Action OnPlayerDetected;
         public event Action OnPlayerLost;

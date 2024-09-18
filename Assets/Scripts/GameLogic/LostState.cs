@@ -1,4 +1,7 @@
 ﻿// LostState.cs
+
+using Audio;
+using Const;
 using UI.Elements;
 using UI.Popups;
 using UnityEngine;
@@ -10,8 +13,7 @@ namespace GameLogic
         private readonly GameStateController _gameStateController;
         private readonly TimeCounter _timeCounter;
         private readonly LosePopup _loseMenuUI;
-
-        public bool IsInputAllowed => false;
+        
         public bool IsGameActive => false;
 
         public LostState(GameStateController gameStateController)
@@ -25,6 +27,8 @@ namespace GameLogic
         {
             _timeCounter.StopCounting();
             _loseMenuUI.ShowView();
+            AudioManager.Instance.PlaySFX(AudioConst.Hit);
+            AudioManager.Instance.StopSteps(); 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }

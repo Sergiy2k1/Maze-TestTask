@@ -1,4 +1,6 @@
 ﻿// WonState.cs
+
+using Audio;
 using UI.Elements;
 using UI.Popups;
 using UnityEngine;
@@ -25,6 +27,7 @@ namespace GameLogic
         {
             _timeCounter.StopCounting();
             _winMenuUI.ShowView();
+            AudioManager.Instance.StopSteps(); 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }

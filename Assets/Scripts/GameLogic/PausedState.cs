@@ -1,4 +1,6 @@
 ﻿// PausedState.cs
+
+using Audio;
 using UI.Elements;
 using UI.Popups;
 using UnityEngine;
@@ -23,6 +25,7 @@ namespace GameLogic
 
         public void EnterState()
         {
+            AudioManager.Instance.StopSteps(); 
             _timeCounter.StopCounting();
             _pauseMenuUI.ShowView();
             Cursor.lockState = CursorLockMode.None;

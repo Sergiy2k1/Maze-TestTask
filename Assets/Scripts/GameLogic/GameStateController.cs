@@ -8,7 +8,6 @@ namespace GameLogic
 {
     public class GameStateController : MonoBehaviour
     {
-        // Посилання на UI-елементи
         [SerializeField] private TimeCounter timeCounter;
         [SerializeField] private PausePopup pauseMenuUI;
         [SerializeField] private WinPopup winMenuUI;

@@ -12,12 +12,12 @@ namespace Audio
         private const string SfXMute = "SFXMute";
 
         [SerializeField] Sound[] musicSounds, sfxSounds;
-        public AudioSource musicSource, sfxSource;
+        public AudioSource musicSource, sfxSource, stepsSource;
 
         private bool _isMusicMuted;       
         private bool _isSfXMuted;         
         private bool _isAudioMuted;         
-    
+
         public bool IsOffMusic => _isMusicMuted;
         public bool IsOffSound => _isSfXMuted;
         public bool IsAudioMuted => _isMusicMuted && _isSfXMuted;
@@ -34,18 +34,39 @@ namespace Audio
                 Destroy(gameObject);
             }
         }
+
         private void OnEnable()
         {
             InitialSound();
-            PlayMusic(AudioConst.MusicMainLobby);
+            PlayMusic(AudioConst.Music);
         }
 
         public void StopPlayMusic() => 
             musicSource.Stop();
 
-        public void StopPlaySfx()
-        {
+        public void StopPlaySfx() => 
             sfxSource.Stop();
+        
+        public void PlaySteps(string name)
+        {
+            if (!stepsSource.isPlaying)
+            {
+                Sound s = Array.Find(sfxSounds, x => x.name == name);
+                if (s != null)
+                {
+                    stepsSource.clip = s.clip;
+                    stepsSource.loop = true;  
+                    stepsSource.Play();
+                }
+            }
+        }
+        
+        public void StopSteps()
+        {
+            if (stepsSource.isPlaying)
+            {
+                stepsSource.Stop();
+            }
         }
 
         public void PlayMusic(string name)
@@ -78,7 +99,6 @@ namespace Audio
             PlayerPrefs.SetInt(MusicMute, _isMusicMuted ? 1 : 0);
         }
 
-
         public void ToggleSFX()
         {
             _isSfXMuted = !_isSfXMuted;
@@ -95,7 +115,6 @@ namespace Audio
         private void SetMusicLoop(bool isLoop) => 
             musicSource.loop = isLoop;
 
-
         private void InitialSound()
         {
             int musicMute = PlayerPrefs.GetInt(MusicMute, 0);
@@ -106,7 +125,7 @@ namespace Audio
 
             musicSource.mute = _isMusicMuted;
             sfxSource.mute = _isSfXMuted;
-        
+
             SetMusicLoop(true);
         }
     }

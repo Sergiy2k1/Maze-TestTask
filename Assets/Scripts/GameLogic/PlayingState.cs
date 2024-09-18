@@ -37,7 +37,6 @@ namespace GameLogic
 
         public void ExitState()
         {
-            // Дії при виході зі стану "Гра"
         }
 
         public void UpdateState()
